@@ -9,7 +9,7 @@
   },
   "content_scripts": [{
     "matches": ["https://*.google.com/search*"],
-    "js": ["content.js"],
-    "css": ["content.css"]
+    "js": ["search.js"],
+    "css": ["search.css"]
   }]
 }
