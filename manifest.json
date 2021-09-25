@@ -3,7 +3,13 @@
   "description": "Logitech challenge",
   "version": "1.0",
   "manifest_version": 3,
+  "permissions": ["activeTab", "declarativeContent", "tabs"],
   "background": {
     "service_worker": "background.js"
-  }
+  },
+  "content_scripts": [{
+    "matches": ["https://*.google.com/search*"],
+    "js": ["content.js"],
+    "css": ["content.css"]
+  }]
 }
