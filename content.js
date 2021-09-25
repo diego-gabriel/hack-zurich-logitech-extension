@@ -1,7 +1,18 @@
 let currentResultNode = -1;
 let magicScrollActive = false;
 const resultNodes = document.getElementsByClassName("LC20lb DKV0Md");
+const QUESTION_CLASS = "r21Kzd";
 const HACK_CLASS = "hack";
+
+function findAncestor(node, ancestorClass) {
+	let parent = node.parentNode;
+	while(parent && !parent.className?.split(' ').includes(ancestorClass)) {
+		console.log(parent.classList);
+		parent = parent.parentNode;
+	}
+
+	return parent;
+}
 
 function updateSelectedResultNode() {
 
@@ -13,6 +24,14 @@ function updateSelectedResultNode() {
 
 	if (currentResultNode < resultNodes.length) {
 		const node = resultNodes[currentResultNode];
+
+		const questionAncestor = findAncestor(node, QUESTION_CLASS);
+
+		if (questionAncestor) {
+			console.log("has question ancestor");
+			questionAncestor.click();
+		} else {
+
 		node.classList.add(HACK_CLASS);
 		node.scrollIntoView({
 			block: "center",
@@ -21,6 +40,9 @@ function updateSelectedResultNode() {
 		node.focus({
 			preventScroll: true
 		});
+			console.log("no question ancestor");
+		}
+
 	} else {
 		console.log("out of bounds "+currentResultNode);
 	}
@@ -37,6 +59,7 @@ function triggerNavigation(e) {
 		parent.target = "_blank";
 		parent.dispatchEvent(simulatedClick);
 		moveToNextResult();
+		localStorage.setItem(parent.href, "something");
 	}
 }
 
