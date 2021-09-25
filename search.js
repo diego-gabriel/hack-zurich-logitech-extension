@@ -25,13 +25,6 @@ function updateSelectedResultNode() {
 	if (currentResultNode < resultNodes.length) {
 		const node = resultNodes[currentResultNode];
 
-		const questionAncestor = findAncestor(node, QUESTION_CLASS);
-
-		if (questionAncestor) {
-			console.log("has question ancestor");
-			questionAncestor.click();
-		} else {
-
 		node.classList.add(HACK_CLASS);
 		node.scrollIntoView({
 			block: "center",
@@ -40,8 +33,6 @@ function updateSelectedResultNode() {
 		node.focus({
 			preventScroll: true
 		});
-			console.log("no question ancestor");
-		}
 
 	} else {
 		console.log("out of bounds "+currentResultNode);
@@ -58,8 +49,10 @@ function triggerNavigation(e) {
 		})
 		parent.target = "_blank";
 		parent.dispatchEvent(simulatedClick);
+		chrome.runtime.sendMessage({searchResultOpened: parent.href}, (response) => {
+			console.log(response);
+		});
 		moveToNextResult();
-		localStorage.setItem(parent.href, "something");
 	}
 }
 
@@ -112,6 +105,10 @@ if (resultNodes.length > 0) {
 		if (e.keyCode === 16) {
 			magicScrollActive = false;
 		}
+	});
+	window.addEventListener('storage', (e) => {
+		console.log(e);
+		console.log("recv");
 	});
 	document.onmousedown = triggerNavigation;
 }
