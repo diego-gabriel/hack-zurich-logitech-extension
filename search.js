@@ -31,7 +31,7 @@ function updateSelectedResultNode() {
 			inline: "start",
 		});
 		node.focus({
-			preventScroll: true
+			preventScroll: true,
 		});
 
 	} else {
@@ -39,9 +39,28 @@ function updateSelectedResultNode() {
 	}
 }
 
+function getSearchText() {
+	const query = window.location.search.substr(1);
+	let searchText = "";
+
+	if (query) {
+		const tokens = query.split('&');
+
+		for (let i = 0; i < tokens.length && searchText === ""; i++) {
+			if (tokens[i].startsWith("q=")) {
+				searchText = decodeURIComponent(tokens[i].substr(2).replaceAll('+', ' '));
+			}
+		}
+	}
+
+
+	return searchText;
+}
+
 function triggerNavigation(e) {
-	if (e.which == 2) {
-		const parent = resultNodes[currentResultNode].parentNode;
+	const currentNode = resultNodes[currentResultNode];
+	if (e.which == 2 && currentNode) {
+		const parent = currentNode.parentNode;
 		const simulatedClick = new MouseEvent('click', {
 			button: e.button, 
 			which: e.which, 
@@ -49,7 +68,7 @@ function triggerNavigation(e) {
 		})
 		parent.target = "_blank";
 		parent.dispatchEvent(simulatedClick);
-		chrome.runtime.sendMessage({searchResultOpened: parent.href}, (response) => {
+		chrome.runtime.sendMessage({searchResultOpened: parent.href, searchText: getSearchText()}, (response) => {
 			console.log(response);
 		});
 		moveToNextResult();
@@ -105,10 +124,6 @@ if (resultNodes.length > 0) {
 		if (e.keyCode === 16) {
 			magicScrollActive = false;
 		}
-	});
-	window.addEventListener('storage', (e) => {
-		console.log(e);
-		console.log("recv");
 	});
 	document.onmousedown = triggerNavigation;
 }
