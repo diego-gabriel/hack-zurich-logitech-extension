@@ -1,6 +1,6 @@
 {
-  "name": "Wheel",
-  "description": "Logitech challenge",
+  "name": "LogiSearch",
+  "description": "The extension you didn't know you needed.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["activeTab", "declarativeContent", "tabs"],
@@ -13,6 +13,7 @@
     "css": ["search.css"]
   }, {
     "matches": ["*://*/*"],
-    "js": ["result.js"]
+    "js": ["result.js"],
+    "css": ["result.css"]
   }]
 }

@@ -59,7 +59,7 @@ function getSearchText() {
 
 function triggerNavigation(e) {
 	const currentNode = resultNodes[currentResultNode];
-	if (e.which == 2 && currentNode) {
+	if (e.which == 2 && currentNode && magicScrollActive) {
 		const parent = currentNode.parentNode;
 		const simulatedClick = new MouseEvent('click', {
 			button: e.button, 
@@ -113,7 +113,6 @@ try {
 
 var wheelOpt = supportsPassive ? { passive: false } : false;
 var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-
 
 if (resultNodes.length > 0) {
 	window.addEventListener(wheelEvent, onWheelEvent, wheelOpt);

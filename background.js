@@ -12,6 +12,5 @@ chrome.runtime.onInstalled.addListener(function() {
 				sendResponse({searchText: searchedUrls[request.searchResultLoaded]});
 			}
 		}
-		return true;
 	});
 });
